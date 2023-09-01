@@ -1,5 +1,6 @@
 package com.promc.announce.manager;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,10 +11,12 @@ public class ConfigManager {
     private static final Map<String, Object> configMap = new HashMap<>();
 
     public void setup(JavaPlugin plugin) {
-        plugin.getConfig().getValues(true).forEach((k, v) -> {
-            //Bukkit.getLogger().info(k + " " + v);
-            configMap.put(k, v == null ? k : v);
-        });
+        plugin.getConfig()
+                .getConfigurationSection("messages")
+                .getValues(true).forEach((k, v) -> {
+                    Bukkit.getLogger().info(k + " " + v);
+                    configMap.put(k, v == null ? k : v);
+                });
     }
 
     public void reload(JavaPlugin plugin) {
@@ -24,7 +27,7 @@ public class ConfigManager {
      * 获取配置
      *
      * @param node 配置文件节点
-     * @param def 默认值
+     * @param def  默认值
      * @return 配置
      */
     @NotNull

@@ -12,6 +12,8 @@ public final class Announce extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
+
         configManager = new ConfigManager();
         configManager.setup(this);
 
@@ -19,6 +21,7 @@ public final class Announce extends JavaPlugin {
         TaskManager.loadTimer(this);
 
         getCommand("announce").setExecutor(new Commands(this));
+        getLogger().info(ColorUtil.colorize("Announce Enabled"));
     }
 
     @Override

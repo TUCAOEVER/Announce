@@ -29,10 +29,10 @@ public class Commands implements CommandExecutor {
                 TaskManager.loadTimer(plugin);
                 TaskManager.loadSchedule(plugin);
 
-                String reloadMessage = messagesConfig.getString("reload_config", "");
+                String reloadMessage = messagesConfig.getString("reload-config", "");
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', reloadMessage));
             } else {
-                String noPermissionMessage = messagesConfig.getString("no_permission", "");
+                String noPermissionMessage = messagesConfig.getString("no-permission", "");
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', noPermissionMessage));
             }
             return true;

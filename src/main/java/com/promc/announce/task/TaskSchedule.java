@@ -9,6 +9,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -18,7 +19,7 @@ public class TaskSchedule implements Task {
 
     private ScheduledFuture<?> scheduledFuture;
     private ConfigurationSection config;
-
+    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     public TaskSchedule(ConfigurationSection config) {
         this.config = config;
@@ -26,6 +27,7 @@ public class TaskSchedule implements Task {
 
     @Override
     public void start() {
+        Bukkit.getLogger().info("Start Schedule");
 
         // 获取当前日期
         LocalDate currentDate = LocalDate.now();
@@ -39,12 +41,14 @@ public class TaskSchedule implements Task {
         long iniDelay = Duration.between(now, future).toMillis();
 
         String[] messages = config.getString("text", "").split("\n");
+        List<String> commands = config.getStringList("commands");
 
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         scheduledFuture = executorService.scheduleWithFixedDelay(() -> Bukkit.getOnlinePlayers().forEach(player -> {
                     for (String message : messages) {
                         player.sendMessage(PlaceholderAPI.setPlaceholders(player, ColorUtil.colorize(message)));
                     }
+                    commands.forEach(command -> Bukkit
+                            .dispatchCommand(Bukkit.getConsoleSender(), PlaceholderAPI.setPlaceholders(null, command)));
                 }),
                 iniDelay,
                 TimeUnit.DAYS.toMillis(1),

@@ -1,7 +1,6 @@
 messages:
-  no_permission: "&5TAnnouncer &e> &cYou don't have permissions to execute this command."
-  reload_config: "&5TAnnouncer &e> &aConfig reloaded."
-  version_message: '&5TAnnouncer &e> &aTAnnouncer version: &7{{version}}'
+  no-permission: "&5TAnnouncer &e> &cYou don't have permissions to execute this command."
+  reload-config: "&5TAnnouncer &e> &aConfig reloaded."
 
 schedule:
   '1':

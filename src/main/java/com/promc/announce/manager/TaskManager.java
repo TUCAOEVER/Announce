@@ -18,7 +18,7 @@ public class TaskManager {
         ConfigurationSection section = plugin.getConfig().getConfigurationSection("schedule");
         if (section == null) return;
         section.getKeys(false).forEach(key -> {
-            Task task = new TaskSchedule(section);
+            Task task = new TaskSchedule(section.getConfigurationSection(key));
             task.start();
             scheduleTasks.add(task);
         });
@@ -31,7 +31,7 @@ public class TaskManager {
         ConfigurationSection section = plugin.getConfig().getConfigurationSection("timer");
         if (section == null) return;
         section.getKeys(false).forEach(key -> {
-            Task task = new TaskTimer(section);
+            Task task = new TaskTimer(section.getConfigurationSection(key));
             task.start();
             timerTasks.add(task);
         });

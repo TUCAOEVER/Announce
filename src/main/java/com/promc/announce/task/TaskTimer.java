@@ -5,6 +5,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class TaskTimer implements Task {
     private ScheduledFuture<?> scheduledFuture;
     private ConfigurationSection config;
+    private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
     public TaskTimer(ConfigurationSection config) {
         this.config = config;
@@ -22,11 +24,14 @@ public class TaskTimer implements Task {
     @Override
     public void start() {
 
+        Bukkit.getLogger().info("Start Timer");
+
         String[] messages = config.getString("text", "").split("\n");
         List<String> commands = config.getStringList("commands");
         int interval = config.getInt("time", 300);
 
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        Bukkit.getLogger().info(Arrays.toString(messages) + " commands" + commands + " interval" + interval);
+
         scheduledFuture = executorService.scheduleWithFixedDelay(() -> {
                     Bukkit.getOnlinePlayers().forEach(player -> {
                         for (String message : messages) {
