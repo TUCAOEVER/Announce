@@ -1,0 +1,25 @@
+messages:
+  no_permission: "&5TAnnouncer &e> &cYou don't have permissions to execute this command."
+  reload_config: "&5TAnnouncer &e> &aConfig reloaded."
+  version_message: '&5TAnnouncer &e> &aTAnnouncer version: &7{{version}}'
+
+schedule:
+  '1':
+    text: |-
+      Welcome to ProMC Network
+      Have fun in ProMC Network!
+    commands: broadcast Success trigger schedule task
+    time: 12:00
+  '2':
+    text: |-
+      You're %player_name%.
+      Nice to see you in ProMC Network.
+    time: 16:00
+
+timer:
+  '1':
+    text: |-
+      Welcome to ProMC Network
+      This message will trigger every 5 mins.
+    commands: broadcast Success trigger timer task
+    time: 300

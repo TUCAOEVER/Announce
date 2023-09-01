@@ -1,0 +1,10 @@
+name: Announce
+version: '${project.version}'
+main: com.promc.announce.Announce
+api-version: '1.16'
+author: TUCAOEVER
+commands:
+  announce:
+    description: a plugin to schedule work.
+depend:
+  - PlaceholderAPI
