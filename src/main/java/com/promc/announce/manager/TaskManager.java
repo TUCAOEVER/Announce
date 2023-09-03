@@ -12,8 +12,13 @@ import java.util.List;
 public class TaskManager {
 
     private final static List<Task> scheduleTasks = new ArrayList<>();
-    private final static  List<Task> timerTasks = new ArrayList<>();
+    private final static List<Task> timerTasks = new ArrayList<>();
 
+    /**
+     * 加载定时任务
+     *
+     * @param plugin 插件对象
+     */
     public static void loadSchedule(JavaPlugin plugin) {
         ConfigurationSection section = plugin.getConfig().getConfigurationSection("schedule");
         if (section == null) return;
@@ -23,10 +28,20 @@ public class TaskManager {
             scheduleTasks.add(task);
         });
     }
+
+    /**
+     * 停止所有定时任务
+     */
     public static void stopAllSchedule() {
         scheduleTasks.forEach(Task::stop);
+        scheduleTasks.clear();
     }
 
+    /**
+     * 加载计时任务
+     *
+     * @param plugin 插件对象
+     */
     public static void loadTimer(JavaPlugin plugin) {
         ConfigurationSection section = plugin.getConfig().getConfigurationSection("timer");
         if (section == null) return;
@@ -36,12 +51,20 @@ public class TaskManager {
             timerTasks.add(task);
         });
     }
+
+    /**
+     * 停止所有计时任务
+     */
     public static void stopAllTimer() {
         timerTasks.forEach(Task::stop);
+        timerTasks.clear();
     }
 
 
-    public static void stopAll(){
+    /**
+     * 停止所有任务并清除缓存（包括定时任务和计时任务）
+     */
+    public static void stopAll() {
         stopAllSchedule();
         stopAllTimer();
     }

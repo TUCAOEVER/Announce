@@ -1,21 +1,19 @@
 package com.promc.announce;
 
-import com.promc.announce.manager.ConfigManager;
+import com.promc.announce.manager.MessageManager;
 import com.promc.announce.manager.TaskManager;
-import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Announce extends JavaPlugin {
 
-    @Getter
-    private static ConfigManager configManager;
+    private static Announce announce;
 
     @Override
     public void onEnable() {
+        announce = this;
         saveDefaultConfig();
 
-        configManager = new ConfigManager();
-        configManager.setup(this);
+        MessageManager.setup(this);
 
         TaskManager.loadSchedule(this);
         TaskManager.loadTimer(this);
@@ -29,4 +27,8 @@ public final class Announce extends JavaPlugin {
         TaskManager.stopAll();
     }
 
+
+    public static Announce getInstance() {
+        return announce;
+    }
 }

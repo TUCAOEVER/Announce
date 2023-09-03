@@ -1,5 +1,6 @@
 package com.promc.announce;
 
+import com.promc.announce.manager.MessageManager;
 import com.promc.announce.manager.TaskManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -12,11 +13,9 @@ import org.jetbrains.annotations.NotNull;
 public class Commands implements CommandExecutor {
 
     private final JavaPlugin plugin;
-    private final ConfigurationSection messagesConfig;
 
     public Commands(JavaPlugin plugin) {
         this.plugin = plugin;
-        this.messagesConfig = plugin.getConfig().getConfigurationSection("messages");
     }
 
     @Override
@@ -24,16 +23,15 @@ public class Commands implements CommandExecutor {
         if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
             if (sender.hasPermission("tannouncer.reload")) {
 
-                Announce.getConfigManager().reload(plugin);
+                MessageManager.reload(plugin);
+
                 TaskManager.stopAll();
                 TaskManager.loadTimer(plugin);
                 TaskManager.loadSchedule(plugin);
 
-                String reloadMessage = messagesConfig.getString("reload-config", "");
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', reloadMessage));
+                sender.sendMessage(MessageManager.getMessage("reload-config"));
             } else {
-                String noPermissionMessage = messagesConfig.getString("no-permission", "");
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', noPermissionMessage));
+                sender.sendMessage(MessageManager.getMessage("no-perm"));
             }
             return true;
         }

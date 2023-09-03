@@ -1,24 +1,26 @@
 messages:
-  no-permission: "&5TAnnouncer &e> &cYou don't have permissions to execute this command."
-  reload-config: "&5TAnnouncer &e> &aConfig reloaded."
+  no-perm: "&8[&5Announce&8] &7你没有足够的权限执行该命令."
+  reload-config: "&8[&5Announce&8] &7重载配置文件."
 
 schedule:
   '1':
     text: |-
       Welcome to ProMC Network
       Have fun in ProMC Network!
-    commands: broadcast Success trigger schedule task
-    time: 12:00
+    commands:
+    - 'broadcast Success trigger schedule task'
+    time: '12:00'
   '2':
     text: |-
       You're %player_name%.
       Nice to see you in ProMC Network.
-    time: 16:00
+    time: '16:00'
 
 timer:
   '1':
     text: |-
       Welcome to ProMC Network
       This message will trigger every 5 mins.
-    commands: broadcast Success trigger timer task
+    commands:
+    - 'broadcast Success trigger timer task'
     time: 300

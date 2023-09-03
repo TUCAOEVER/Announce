@@ -1,9 +1,11 @@
 package com.promc.announce.task;
 
+import com.promc.announce.Announce;
 import com.promc.announce.ColorUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -17,9 +19,8 @@ import java.util.concurrent.TimeUnit;
 
 public class TaskSchedule implements Task {
 
-    private ScheduledFuture<?> scheduledFuture;
+    private BukkitTask task;
     private ConfigurationSection config;
-    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     public TaskSchedule(ConfigurationSection config) {
         this.config = config;
@@ -27,7 +28,7 @@ public class TaskSchedule implements Task {
 
     @Override
     public void start() {
-        Bukkit.getLogger().info("Start Schedule");
+        //Bukkit.getLogger().info("Start Schedule " + config.getString("time", "00:00"));
 
         // 获取当前日期
         LocalDate currentDate = LocalDate.now();
@@ -38,25 +39,23 @@ public class TaskSchedule implements Task {
 
         if (now.isAfter(future)) future = future.plusDays(1);
         // 计算时间间隔
-        long iniDelay = Duration.between(now, future).toMillis();
+        long iniDelay = Duration.between(now, future).toSeconds();
 
         String[] messages = config.getString("text", "").split("\n");
         List<String> commands = config.getStringList("commands");
 
-        scheduledFuture = executorService.scheduleWithFixedDelay(() -> Bukkit.getOnlinePlayers().forEach(player -> {
-                    for (String message : messages) {
-                        player.sendMessage(PlaceholderAPI.setPlaceholders(player, ColorUtil.colorize(message)));
-                    }
-                    commands.forEach(command -> Bukkit
-                            .dispatchCommand(Bukkit.getConsoleSender(), PlaceholderAPI.setPlaceholders(null, command)));
-                }),
-                iniDelay,
-                TimeUnit.DAYS.toMillis(1),
-                TimeUnit.MILLISECONDS);
+        task = Bukkit.getScheduler().runTaskLater(Announce.getInstance(), () -> Bukkit.getOnlinePlayers().forEach(player -> {
+            for (String message : messages) {
+                player.sendMessage(PlaceholderAPI.setPlaceholders(player, ColorUtil.colorize(message)));
+            }
+            commands.forEach(command -> Bukkit
+                    .dispatchCommand(Bukkit.getConsoleSender(), PlaceholderAPI.setPlaceholders(null, command)));
+            start();
+        }), iniDelay * 20L);
     }
 
     @Override
     public void stop() {
-        scheduledFuture.cancel(true);
+        task.cancel();
     }
 }
