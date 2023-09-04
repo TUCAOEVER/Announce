@@ -2,11 +2,9 @@ package com.promc.announce;
 
 import com.promc.announce.manager.MessageManager;
 import com.promc.announce.manager.TaskManager;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
