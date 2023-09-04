@@ -7,16 +7,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 public class TaskTimer implements Task {
     private BukkitTask task;
-    private ConfigurationSection config;
+    private final ConfigurationSection config;
+    private int index = 0;
+
     public TaskTimer(ConfigurationSection config) {
         this.config = config;
     }
@@ -26,7 +23,8 @@ public class TaskTimer implements Task {
 
         //Bukkit.getLogger().info("Start Timer");
 
-        String[] messages = config.getString("text", "").split("\n");
+        List<String> messages = config.getStringList("text");
+        String[] message = !messages.isEmpty() ? messages.get(index).split("\n") : new String[0];
         List<String> commands = config.getStringList("commands");
         int interval = config.getInt("time", 300);
 
@@ -35,15 +33,16 @@ public class TaskTimer implements Task {
 
         task = Bukkit.getScheduler().runTaskLater(Announce.getInstance(), () -> {
             Bukkit.getOnlinePlayers().forEach(player -> {
-                for (String message : messages) {
-                    player.sendMessage(PlaceholderAPI.setPlaceholders(player, ColorUtil.colorize(message)));
-                }
-            });
-            commands.forEach(command -> Bukkit
-                    .dispatchCommand(Bukkit.getConsoleSender(), PlaceholderAPI.setPlaceholders(null, command)));
+                        for (String msg : message) {
+                            player.sendMessage(PlaceholderAPI.setPlaceholders(player, ColorUtil.colorize(msg)));
+                        }
+                    });
+            commands.forEach(command ->
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), PlaceholderAPI.setPlaceholders(null, command)));
             start();
         }, interval * 20L);
 
+        if (++index > messages.size() - 1) index = 0;
 
     }
 

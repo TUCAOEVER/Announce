@@ -19,7 +19,7 @@ public final class Announce extends JavaPlugin {
         TaskManager.loadTimer(this);
 
         getCommand("announce").setExecutor(new Commands(this));
-        getLogger().info(ColorUtil.colorize("Announce Enabled"));
+        getLogger().info("Announce Enabled. Designed by TUCAOEVER");
     }
 
     @Override

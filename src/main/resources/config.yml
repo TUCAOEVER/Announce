@@ -4,9 +4,15 @@ messages:
 
 schedule:
   '1':
-    text: |-
+    text:
+    - |-
       Welcome to ProMC Network
       Have fun in ProMC Network!
+    - |-
+      Those message under schedule
+      will be random.
+      If u want to just specific one
+      just to leave it one single message
     commands:
     - 'broadcast Success trigger schedule task'
     time: '12:00'
@@ -18,9 +24,14 @@ schedule:
 
 timer:
   '1':
-    text: |-
+    text:
+    - |-
       Welcome to ProMC Network
       This message will trigger every 5 mins.
+    - |-
+      Hi %player_name%
+      You now see the second message.
+    - 'Of course, u could\njust try to use ''\n'' to switch line.'
     commands:
     - 'broadcast Success trigger timer task'
     time: 300

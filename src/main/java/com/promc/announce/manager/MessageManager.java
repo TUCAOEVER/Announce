@@ -14,7 +14,8 @@ public class MessageManager {
     public static void setup(JavaPlugin plugin) {
         plugin.getConfig()
                 .getConfigurationSection("messages")
-                .getValues(true).forEach((k, v) -> {
+                .getValues(true)
+                .forEach((k, v) -> {
                     Bukkit.getLogger().info(k + " " + v);
                     msgMap.put(k, v == null ? k : ColorUtil.colorize((String) v));
                 });
